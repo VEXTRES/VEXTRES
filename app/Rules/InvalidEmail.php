@@ -15,22 +15,22 @@ class InvalidEmail implements ValidationRule
      */
 
     public $email;
-    public function __construct($email=null){
+    public function __construct($email = null)
+    {
         $this->email = $email;
     }
 
     public function validate(string $attribute, mixed $value, Closure $fail): void
     {
-        $exists = Contact::where('user_id', auth()->id())
-        ->where('email', $value)            //verifica que no haya repetidos los correos
-        ->where('email', '!=', $this->email)    //verifica si el email q ya tengo registrado es diferente al que me mandaron
-        ->exists();
+        $contacts = Contact::where('user_id', auth()->user()->id)
+            ->whereHas('user', function ($query) use ($value) {
+                $query->where('email', $value)->when($this->email, function ($query) {
+                    $query->where('email', '!=', $this->email);
+                });
+            })->get();
 
-    if ($exists) {
-        $fail('El correo ya se encuentra registrado.');
+        if ($contacts->count() > 0) {
+            $fail('El correo electrónico ingresado, ya se encuentra registrado.');
+        }
     }
-    }
-
-
-
 }

@@ -1,12 +1,12 @@
 <x-app-layout>
     <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 leading-tight">
+        <h2 class="text-xl font-semibold leading-tight text-gray-800">
             Contactos
         </h2>
     </x-slot>
 
-    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        <form action="{{route('contacts.update', $contact)}}" method="post" class="bg-white rounded-lg shadow p-6">
+    <div class="mx-auto max-w-4xl px-4 py-12 sm:px-6 lg:px-8">
+        <form class="rounded-lg bg-white p-6 shadow" action="{{ route('contacts.update', $contact) }}" method="post">
             @csrf
             @method('PUT')
 
@@ -14,12 +14,14 @@
 
             <div class="mb-4">
                 <x-label for="name" value="Nombre de contacto" />
-                <x-input id="name" class="block mt-1 w-full" type="text" name="name" :value="old('name', $contact->name)" required autofocus autocomplete="name" placeholder="Ingresar nombre de contacto" />
+                <x-input class="mt-1 block w-full" id="name" name="name" type="text" :value="old('name', $contact->name)"
+                    required autofocus autocomplete="name" placeholder="Ingresar nombre de contacto" />
             </div>
 
             <div class="mb-4">
                 <x-label for="email" value="Correo electrónico" />
-                <x-input id="email" class="block mt-1 w-full" type="email" name="email" :value="old('email', $contact->email)" required autofocus autocomplete="name" placeholder="Ingresar correo electrónico" />
+                <x-input class="mt-1 block w-full" id="email" name="email" type="email" :value="old('email', $contact->user->email)"
+                    required autofocus autocomplete="name" placeholder="Ingresar correo electrónico" />
             </div>
 
             <div class="flex justify-end">

@@ -25,15 +25,14 @@ class ContactController extends Controller
     {
         $request->validate([
             'name' => 'required',
-            'email' => ['required', 'email', Rule::notIn([auth()->user()->email]), new InvalidEmail],
+            'email' => ['required', 'email', 'exists:users', Rule::notIn([auth()->user()->email]), new InvalidEmail],
         ]);
 
-        $user=User::where('email',Auth::user()->email)->first();
+        $user = User::whereEmail($request->email)->first();
 
         $contact = Contact::create([
             'name' => $request->name,
             'user_id' => auth()->id(),
-            'email' => $request->email,
             'contact_id' => $user->id
         ]);
 
@@ -74,10 +73,10 @@ class ContactController extends Controller
     {
         $request->validate([
             'name' => 'required',
-            'email' => ['required', 'email', Rule::notIn([auth()->user()->email]), new InvalidEmail($contact->email)],
+            'email' => ['required', 'email', 'exists:users', Rule::notIn([auth()->user()->email]), new InvalidEmail($contact->user->email)],
         ]);
 
-        $user=User::where('email',Auth::user()->email)->first();
+        $user = User::where('email', Auth::user()->email)->first();
 
         $contact = $contact->update([
             'name' => $request->name,

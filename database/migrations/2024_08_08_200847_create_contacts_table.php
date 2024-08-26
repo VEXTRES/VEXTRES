@@ -13,12 +13,9 @@ return new class extends Migration
     {
         Schema::create('contacts', function (Blueprint $table) {
             $table->id();
-
             $table->string('name');
-            $table->string('email');
             $table->foreignId('user_id')->constrained();
             $table->foreignId('contact_id')->nullable()->constrained(table: 'users');
-
             $table->timestamps();
         });
     }
