@@ -39,7 +39,7 @@ class ContactController extends Controller
         session()->flash('flash.banner', 'El contacto se ha creado correctamente');
         session()->flash('flash.bannerStyle', 'success');
 
-        return redirect()->route('contacts.edit', $contact);
+        return redirect()->route('contacts.index', $contact);
     }
 
     /**
